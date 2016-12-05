@@ -1,0 +1,22 @@
+{
+  "name": "execut/yii2-migration",
+  "description": "Yii2 helper to simplify of writing migration",
+  "keywords": ["yii2"],
+  "homepage": "https://github.com/execut/yii2-migration",
+  "type": "yii2-extension",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "eXeCUT"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "yiisoft/yii2": "@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "execut\\migration\\": ""
+    }
+  }
+}
