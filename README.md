@@ -28,7 +28,7 @@ This is a typical migration for yii2:
         $this->dropTable('characteristics_units');
     }
 ```
-Why write more? If you use execut yii2-migration helper, you can write it faster and more compact:�
+Why write more? If you use execut yii2-migration helper, you can write it faster and more compact:
 ```
     public function initInverter(\execut\yii\migration\Inverter $i)
     {
