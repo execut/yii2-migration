@@ -54,13 +54,17 @@ class Table extends Component
         return $this;
     }
 
-    public function addForeignColumn($toTable, $isNotNull = false, $defaultValue = null, $columnName = null)
+    public function addForeignColumn($toTable, $isNotNull = false, $defaultValue = null, $columnName = null, $columnType = null)
     {
         if ($columnName === null) {
             $columnName = substr($toTable, 0, strlen($toTable) - 1) . '_id';
         }
 
-        $this->migration->addColumn($this->name, $columnName, 'BIGINT');
+        if ($columnType === null) {
+            $columnType = $this->migration->bigInteger();
+        }
+
+        $this->migration->addColumn($this->name, $columnName, $columnType);
         $this->migration->addForeignKey($this->name . '_' . $columnName . '_fk', $this->name, $columnName, $toTable, 'id');
         if ($isNotNull) {
             if ($defaultValue !== null) {
