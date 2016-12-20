@@ -25,7 +25,7 @@ class Inverter extends Component
         return $this;
     }
 
-    public function execute($sql)
+    public function execute($sql, $params = [])
     {
         $this->addOperation(__FUNCTION__, func_get_args());
         return $this;
@@ -53,7 +53,7 @@ class Inverter extends Component
         return $this;
     }
 
-    public function delete($table, $where = '') {
+    public function delete($table, $where = '', $params = []) {
         $this->addOperation(__FUNCTION__, func_get_args());
         return $this;
     }
@@ -84,12 +84,12 @@ class Inverter extends Component
         return $this;
     }
 
-    public function createTable($table, $columns) {
+    public function createTable($table, $columns, $options = null) {
         $this->addOperation(__FUNCTION__, func_get_args());
         return $this;
     }
 
-    public function dropTable($table, $columns) {
+    public function dropTable($table, $columns = []) {
         $this->addOperation(__FUNCTION__, func_get_args());
         return $this;
     }
@@ -223,5 +223,10 @@ SQL;
                 call_user_func_array([$this->migration, $function], $operation[1]);
             }
         }
+    }
+
+    public function __call($name, $params)
+    {
+        return call_user_func_array([$this->migration, $name], $params);
     }
 }
