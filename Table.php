@@ -57,7 +57,13 @@ class Table extends Component
     public function addForeignColumn($toTable, $isNotNull = false, $defaultValue = null, $columnName = null, $columnType = null)
     {
         if ($columnName === null) {
-            $columnName = substr($toTable, 0, strlen($toTable) - 1) . '_id';
+            if (substr($toTable, -1) === 's') {
+                $columnName = substr($toTable, 0, strlen($toTable) - 1);
+            } else {
+                $columnName = $toTable;
+            }
+
+            $columnName .= '_id';
         }
 
         if ($columnType === null) {
