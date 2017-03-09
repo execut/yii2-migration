@@ -58,6 +58,11 @@ class Inverter extends Component
         return $this;
     }
 
+    public function renameTable($oldTable, $newTable) {
+        $this->addOperation(__FUNCTION__, func_get_args());
+        return $this;
+    }
+
     public function up() {
         foreach ($this->operations as $operation) {
             call_user_func_array([$this->migration, $operation[0]], $operation[1]);
@@ -216,6 +221,11 @@ SQL;
                 break;
                 case 'execute':
                     $function = 'execute';
+                break;
+                case 'renameTable':
+                    $oldTable = $operation[1][0];
+                    $operation[1][0] = $operation[1][1];
+                    $operation[1][1] = $oldTable;
                 break;
             }
 

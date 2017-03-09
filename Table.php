@@ -198,4 +198,8 @@ class Table extends Component
 
         return $name;
     }
+
+    public function rename($newName) {
+        $this->migration->renameTable($this->name, $newName);
+    }
 }
