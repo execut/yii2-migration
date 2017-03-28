@@ -201,5 +201,14 @@ class Table extends Component
 
     public function rename($newName) {
         $this->migration->renameTable($this->name, $newName);
+        $this->name = $newName;
+
+        return $this;
+    }
+
+    public function renameColumn($oldName, $newName) {
+        $this->migration->renameColumn($this->name, $oldName, $newName);
+
+        return $this;
     }
 }
