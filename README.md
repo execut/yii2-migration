@@ -62,5 +62,22 @@ or add
 
 to the ```require``` section of your `composer.json` file.
 
+## Usage
+To use my api, simply expand the migration class from the execut\yii\migration\Migration class and override the abstract method:
+```
+     public function initInverter(\execut\yii\migration\Inverter $i)
+     {
+     }
+```
+$i has all the methods that normal migration has, but allows you to write actions up and down at a time.
+
+To permanently do not rewrite the migration, you can define a new template for the yii migrate\create command.
+```
+    'controllerMap' => [
+        'migrate' => [
+            'templateFile' => '@vendor/execut/yii2-migration/views/template.php',
+        ],
+```
+
 ## Supported databases
 Currently only supported PostgreSQL. Also you can use BDR plugin for PostgreSQL.
