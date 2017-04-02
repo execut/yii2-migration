@@ -206,11 +206,11 @@ SQL;
                 case 'dropTable':
                     $function = 'createTable';
                 break;
-                case 'createTable':
-                    $function = 'dropTable';
+                case 'addColumns':
+                    $function = 'dropColumns';
                 break;
-                case 'dropTable':
-                    $function = 'createTable';
+                case 'dropColumns':
+                    $function = 'addColumns';
                 break;
                 case 'createProcedureTrigger':
                     $function = 'dropProcedureTrigger';
