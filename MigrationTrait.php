@@ -20,6 +20,18 @@ trait MigrationTrait
         ]);
     }
 
+    public function addColumns($table, $columns) {
+        foreach ($columns as $name => $type) {
+            $this->addColumn($table, $name, $type);
+        }
+    }
+
+    public function dropColumns($table, $columns) {
+        foreach ($columns as $name => $type) {
+            $this->dropColumn($table, $name);
+        }
+    }
+
     public function alterColumnSetDefault($table, $column, $value) {
         $this->alterColumnSet($table, $column, 'DEFAULT ' . $value);
     }

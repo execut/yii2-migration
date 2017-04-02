@@ -43,6 +43,18 @@ class Inverter extends Component
         return $this;
     }
 
+    public function addColumns($table, $columns)
+    {
+        $this->addOperation(__FUNCTION__, func_get_args());
+        return $this;
+    }
+
+    public function dropColumns($table, $columns)
+    {
+        $this->addOperation(__FUNCTION__, func_get_args());
+        return $this;
+    }
+
     public function addForeignKey($name, $table, $columns, $refTable, $refColumns, $delete = null, $update = null) {
         $this->addOperation(__FUNCTION__, func_get_args());
         return $this;
@@ -194,11 +206,11 @@ SQL;
                 case 'dropTable':
                     $function = 'createTable';
                 break;
-                case 'createTable':
-                    $function = 'dropTable';
+                case 'addColumns':
+                    $function = 'dropColumns';
                 break;
-                case 'dropTable':
-                    $function = 'createTable';
+                case 'dropColumns':
+                    $function = 'addColumns';
                 break;
                 case 'createProcedureTrigger':
                     $function = 'dropProcedureTrigger';

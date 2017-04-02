@@ -24,6 +24,16 @@ class Table extends Component
         return $this;
     }
 
+    public function addColumns($columns) {
+        $this->migration->addColumns($this->name, $columns);
+        return $this;
+    }
+
+    public function dropColumns($columns) {
+        $this->migration->dropColumns($this->name, $columns);
+        return $this;
+    }
+
     public function dropColumn($name, $type)
     {
         $this->migration->dropColumn($this->name, $name, $type);
