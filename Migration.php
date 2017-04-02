@@ -44,12 +44,12 @@ abstract class Migration extends \yii\db\Migration
         }
     }
 
-    public function defaultColumns() {
-        return [
+    public function defaultColumns($otherColumns = []) {
+        return array_merge([
             'id' => $this->primaryKey(),
             'created' => $this->dateTime()->notNull()->defaultExpression('now()'),
             'updated' => $this->dateTime(),
-        ];
+        ], $otherColumns);
     }
 
     /**
