@@ -54,7 +54,7 @@ class Table extends Component
         return $this;
     }
 
-    public function addForeignColumn($toTable, $isNotNull = false, $defaultValue = null, $columnName = null, $columnType = null)
+    public function addForeignColumn($toTable, $isNotNull = false, $defaultValue = null, $columnName = null, $columnType = null, $refColumn = 'id')
     {
         if ($columnName === null) {
             if (substr($toTable, -1) === 's') {
@@ -71,7 +71,7 @@ class Table extends Component
         }
 
         $this->migration->addColumn($this->name, $columnName, $columnType);
-        $this->migration->addForeignKey($this->name . '_' . $columnName . '_fk', $this->name, $columnName, $toTable, 'id');
+        $this->migration->addForeignKey($this->name . '_' . $columnName . '_fk', $this->name, $columnName, $toTable, $refColumn);
         if ($isNotNull) {
             if ($defaultValue !== null) {
                 $this->migration->update($this->name, [
