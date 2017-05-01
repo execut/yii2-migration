@@ -18,6 +18,12 @@ class Table extends Component
      */
     public $migration = null;
 
+    public function addColumns($columns)
+    {
+        $this->migration->addColumns($this->name, $columns);
+        return $this;
+    }
+
     public function addColumn($name, $type)
     {
         $this->migration->addColumn($this->name, $name, $type);
