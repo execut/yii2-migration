@@ -60,16 +60,21 @@ class Table extends Component
         return $this;
     }
 
+    public function getColumnNameFromTable($toTable) {
+        if (substr($toTable, -1) === 's') {
+            $columnName = substr($toTable, 0, strlen($toTable) - 1);
+        } else {
+            $columnName = $toTable;
+        }
+
+        $columnName .= '_id';
+        return $columnName;
+    }
+
     public function addForeignColumn($toTable, $isNotNull = false, $defaultValue = null, $columnName = null, $columnType = null, $refColumn = 'id')
     {
         if ($columnName === null) {
-            if (substr($toTable, -1) === 's') {
-                $columnName = substr($toTable, 0, strlen($toTable) - 1);
-            } else {
-                $columnName = $toTable;
-            }
-
-            $columnName .= '_id';
+            $columnName = $this->getColumnNameFromTable($toTable);
         }
 
         if ($columnType === null) {
