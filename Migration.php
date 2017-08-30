@@ -7,7 +7,6 @@
 
 namespace execut\yii\migration;
 
-
 use yii\db\ColumnSchemaBuilder;
 
 abstract class Migration extends \yii\db\Migration
@@ -45,11 +44,13 @@ abstract class Migration extends \yii\db\Migration
     }
 
     public function defaultColumns($otherColumns = []) {
-        return array_merge([
-            'id' => $this->primaryKey(),
-            'created' => $this->dateTime()->notNull()->defaultExpression('now()'),
-            'updated' => $this->dateTime(),
-        ], $otherColumns);
+        $standardColumns = \yii::createObject([
+            'class' => StandardColumns::class,
+            'migration' => $this,
+            'otherColumns' => $otherColumns,
+        ]);
+
+        return $standardColumns->getColumns();
     }
 
     /**
