@@ -8,6 +8,8 @@
 namespace execut\yii\migration;
 
 use yii\db\ColumnSchemaBuilder;
+use yii\db\Connection;
+use yii\di\Instance;
 
 abstract class Migration extends \yii\db\Migration
 {
@@ -16,9 +18,12 @@ abstract class Migration extends \yii\db\Migration
      * @var Inverter
      */
     public $inverter = null;
+    protected $isRefreshSchema = true;
     public $isSafe = true;
+
     public function init() {
-        parent::init();
+        $this->initDb();
+
         $this->inverter =   new Inverter([
             'migration' => $this,
         ]);
@@ -60,5 +65,15 @@ abstract class Migration extends \yii\db\Migration
      */
     public function data() {
         return $this->getDb()->getSchema()->createColumnSchemaBuilder('bytea');
+    }
+
+    protected function initDb()
+    {
+        $this->db = Instance::ensure($this->db, Connection::className());
+        if ($this->isRefreshSchema) {
+            $this->db->getSchema()->refresh();
+        }
+
+        $this->db->enableSlaves = false;
     }
 }
