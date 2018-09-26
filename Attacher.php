@@ -47,7 +47,7 @@ abstract class Attacher extends Migration
     protected function getCacheKey()
     {
         $variations = $this->getVariations();
-        $cacheKey = '';
+        $cacheKey = get_class($this);
         foreach ($variations as $variation) {
             $cacheKey .= serialize($this->$variation);
         }
