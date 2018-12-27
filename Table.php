@@ -73,12 +73,12 @@ class Table extends Component
 
     public function addForeignColumn($toTable, $isNotNull = false, $defaultValue = null, $columnName = null, $columnType = null, $refColumn = 'id', $fkName = null)
     {
-        if ($fkName === null) {
-            $fkName = $this->name . '_' . $columnName . '_fk';
-        }
-
         if ($columnName === null) {
             $columnName = $this->getColumnNameFromTable($toTable);
+        }
+
+        if ($fkName === null) {
+            $fkName = $this->name . '_' . $columnName . '_fk';
         }
 
         if ($columnType === null) {
