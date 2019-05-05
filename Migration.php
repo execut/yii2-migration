@@ -64,7 +64,7 @@ abstract class Migration extends \yii\db\Migration
      * @return ColumnSchemaBuilder
      */
     public function data() {
-        return $this->getDb()->getSchema()->createColumnSchemaBuilder('bytea');
+        return $this->binary();
     }
 
     protected function initDb()
