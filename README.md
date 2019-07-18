@@ -80,4 +80,4 @@ To permanently do not rewrite the migration, you can define a new template for t
 ```
 
 ## Supported databases
-Currently only supported PostgreSQL. Also you can use BDR plugin for PostgreSQL.
+Currently only supported PostgreSQL and MySQL. Also you can use BDR plugin for PostgreSQL.

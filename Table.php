@@ -78,31 +78,55 @@ class Table extends Component
         }
 
         if ($fkName === null) {
-            $fkName = $this->name . '_' . $columnName . '_fk';
+            $fkName = $this->generateFkName($columnName);
         }
 
         if ($columnType === null) {
-            $columnType = $this->migration->bigInteger();
+            $columnType = $this->migration->integer();
+        }
+
+        if ($isNotNull && $this->isMysql()) {
+            $columnType .= ' NOT NULL';
         }
 
         $this->migration->addColumn($this->name, $columnName, $columnType);
         $this->migration->addForeignKey($fkName, $this->name, $columnName, $toTable, $refColumn);
-        if ($isNotNull) {
-            if ($defaultValue !== null) {
-                $this->migration->update($this->name, [
-                    $columnName => $defaultValue,
-                ]);
-            }
+        if ($defaultValue !== null) {
+            $this->migration->update($this->name, [
+                $columnName => $defaultValue,
+            ]);
+        }
 
+        if ($isNotNull && !$this->isMysql()) {
             $this->migration->alterColumnSetNotNull($this->name, $columnName);
         }
 
         return $this;
     }
 
-    public function dropForeignColumn($toTable)
+    public function dropForeignColumn($toTable, $isNotNull = false, $defaultValue = null, $columnName = null, $columnType = null, $refColumn = 'id', $fkName = null)
     {
+        if ($columnName === null) {
+            $columnName = $this->getColumnNameFromTable($toTable);
+        }
+
+        if ($fkName === null) {
+            $fkName = $this->generateFkName($columnName);
+        }
+
+        if ($columnType === null) {
+            $columnType = $this->migration->integer();
+        }
+
+        if ($isNotNull && $this->isMysql()) {
+            $columnType .= ' NOT NULL';
+        }
+
         $columnName = substr($toTable, 0, strlen($toTable) - 1) . '_id';
+
+        if ($this->isMysql()) {
+            $this->migration->dropForeignKey($fkName, $this->name, $columnName, $toTable, $refColumn);
+        }
 
         $this->migration->dropColumn($this->name, $columnName, 'BIGINT');
 
@@ -123,9 +147,19 @@ class Table extends Component
 
     public function create($columns = [])
     {
-        $this->migration->createTable($this->name, $columns);
+        $this->migration->createTable($this->name, $columns, $this->getOptions());
 
         return $this;
+    }
+
+    protected $options = [];
+    public function getOptions() {
+        $tableOptions = '';
+        if ($this->isMysql()) {
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+        }
+
+        return $tableOptions;
     }
 
     public function setBdrSequence() {
@@ -225,5 +259,23 @@ class Table extends Component
         $this->migration->renameColumn($this->name, $oldName, $newName);
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isMysql()
+    {
+        return $this->migration->db->driverName === 'mysql';
+    }
+
+    /**
+     * @param $columnName
+     * @return string
+     */
+    protected function generateFkName($columnName)
+    {
+        $fkName = $this->name . '_' . $columnName . '_fk';
+        return $fkName;
     }
 }

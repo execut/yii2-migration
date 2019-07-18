@@ -9,6 +9,7 @@ namespace execut\yii\migration;
 
 
 use yii\base\Exception;
+use yii\db\mysql\Schema;
 use yii\helpers\ArrayHelper;
 
 trait MigrationTrait
@@ -41,15 +42,42 @@ trait MigrationTrait
     }
 
     public function alterColumnSetNotNull($table, $column) {
-        $this->alterColumnSet($table, $column, 'NOT NULL');
+        if ($this->isMysql()) {
+            /**
+             * @var Schema $schema
+             */
+            $schema = $this->db->schema;
+            $columnType = $schema->getTableSchema($table)->getColumn($column)->dbType . ' NOT NULL';
+            $this->execute('ALTER TABLE ' . $table . ' MODIFY COLUMN ' . $column . ' ' . $columnType);
+        } else {
+            $this->alterColumnSet($table, $column, 'NOT NULL');
+        }
     }
 
     public function alterColumnDropNotNull($table, $column) {
-        $this->alterColumnDrop($table, $column, 'NOT NULL');
+
+        if ($this->isMysql()) {
+            /**
+             * @var Schema $schema
+             */
+            $schema = $this->db->schema;
+            $columnType = $schema->getTableSchema($table)->getColumn($column)->dbType;
+            $this->execute('ALTER TABLE ' . $table . ' MODIFY COLUMN ' . $column . ' ' . $columnType);
+        } else {
+            $this->alterColumnDrop($table, $column, 'NOT NULL');
+        }
     }
 
     public function alterColumnSet($table, $column, $operation) {
         $this->execute('ALTER TABLE ' . $table . ' ALTER COLUMN ' . $column . ' SET ' . $operation);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isMysql()
+    {
+        return $this->db->driverName === 'mysql';
     }
 
     public function alterColumnDrop($table, $column, $operation) {

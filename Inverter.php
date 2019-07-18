@@ -8,6 +8,7 @@
 namespace execut\yii\migration;
 
 
+use yii\db\Connection;
 use yii\helpers\ArrayHelper;
 use yii\base\Component;
 use yii\base\Exception;
@@ -260,5 +261,12 @@ SQL;
     public function __call($name, $params)
     {
         return call_user_func_array([$this->migration, $name], $params);
+    }
+
+    /**
+     * @return Connection
+     */
+    public function getDb() {
+        return $this->migration->db;
     }
 }
