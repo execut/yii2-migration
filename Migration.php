@@ -69,7 +69,7 @@ abstract class Migration extends \yii\db\Migration
 
     protected function initDb()
     {
-        $this->db = Instance::ensure($this->db, Connection::className());
+        $this->db = Instance::ensure($this->db, Connection::class);
         if ($this->isRefreshSchema) {
             $this->db->getSchema()->refresh();
         }
