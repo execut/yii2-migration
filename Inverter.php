@@ -31,6 +31,16 @@ class Inverter extends Component
         $this->addOperation(__FUNCTION__, func_get_args());
         return $this;
     }
+
+    public function executeBoth($sqlUp, $sqlDown) {
+        $this->addOperation(__FUNCTION__, func_get_args());
+        return $this;
+    }
+
+    public function callback($callbackUp, $callbackDown) {
+        $this->addOperation(__FUNCTION__, func_get_args());
+        return $this;
+    }
     
     public function addColumn($table, $column, $type)
     {
@@ -180,7 +190,7 @@ SQL;
                 case 'dropColumn':
                     $function = 'addColumn';
                 break;
-                case 'uodate':
+                case 'update':
                     $function = 'update';
                 break;
                 case 'addForeignKey':
@@ -239,6 +249,18 @@ SQL;
                 break;
                 case 'execute':
                     $function = 'execute';
+                break;
+                case 'executeBoth':
+                    $function = 'execute';
+                    $oldSql = $operation[1][0];
+                    $operation[1][0] = $operation[1][1];
+                    $operation[1][1] = $oldSql;
+                break;
+                case 'callback':
+                    $function = 'callback';
+                    $oldSql = $operation[1][0];
+                    $operation[1][0] = $operation[1][1];
+                    $operation[1][1] = $oldSql;
                 break;
                 case 'renameTable':
                     $oldTable = $operation[1][0];

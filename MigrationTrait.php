@@ -161,4 +161,8 @@ SQL;
 
         return $this;
     }
+
+    public function callback($callback) {
+        $callback();
+    }
 }

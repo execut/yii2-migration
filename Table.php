@@ -89,16 +89,21 @@ class Table extends Component
             $columnType .= ' NOT NULL';
         }
 
-        $this->migration->addColumn($this->name, $columnName, $columnType);
-        $this->migration->addForeignKey($fkName, $this->name, $columnName, $toTable, $refColumn);
+        $tableName = $this->name;
+        if ($tableName === 'user') {
+            $tableName = '"user"';
+        }
+
+        $this->migration->addColumn($tableName, $columnName, $columnType);
+        $this->migration->addForeignKey($fkName, $tableName, $columnName, $toTable, $refColumn);
         if ($defaultValue !== null) {
-            $this->migration->update($this->name, [
+            $this->migration->update($tableName, [
                 $columnName => $defaultValue,
             ]);
         }
 
         if ($isNotNull && !$this->isMysql()) {
-            $this->migration->alterColumnSetNotNull($this->name, $columnName);
+            $this->migration->alterColumnSetNotNull($tableName, $columnName);
         }
 
         return $this;
