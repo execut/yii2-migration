@@ -153,7 +153,7 @@ SQL;
             throw new Exception('Primary key required for delete');
         }
 
-        $ids = ArrayHelper::map($values, '0', '0');
+        $ids = ArrayHelper::map($values, 'id', 'id');
 
         $this->delete($table, [
             'id' => $ids,
