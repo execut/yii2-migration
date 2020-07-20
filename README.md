@@ -1,6 +1,6 @@
 # yii2-migration
 This is a typical migration for yii2:
-```
+```php
     public function safeUp()
     {
         $this->createTable('characteristics_units', [
@@ -29,7 +29,7 @@ This is a typical migration for yii2:
     }
 ```
 Why write more? If you use execut yii2-migration helper, you can write it faster and more compact:
-```
+```php
     public function initInverter(\execut\yii\migration\Inverter $i)
     {
         $i->table('characteristics')->create(array_merge($this->defaultColumns(), [
@@ -63,8 +63,8 @@ or add
 to the ```require``` section of your `composer.json` file.
 
 ## Usage
-To use my api, simply expand the migration class from the execut\yii\migration\Migration class and override the abstract method:
-```
+To use yii2 migration, simply expand the migration class from the execut\yii\migration\Migration class and override the abstract method:
+```php
      public function initInverter(\execut\yii\migration\Inverter $i)
      {
      }
@@ -72,7 +72,7 @@ To use my api, simply expand the migration class from the execut\yii\migration\M
 $i has all the methods that normal migration has, but allows you to write actions up and down at a time.
 
 To permanently do not rewrite the migration, you can define a new template for the yii migrate\create command.
-```
+```php
     'controllerMap' => [
         'migrate' => [
             'templateFile' => '@vendor/execut/yii2-migration/views/template.php',
